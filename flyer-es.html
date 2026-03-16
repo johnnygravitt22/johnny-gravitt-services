@@ -23,6 +23,8 @@
     .headline h1 { font-size: 2.6rem; font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 0.5rem; }
     .headline h1 em { font-style: normal; color: #c9f06b; }
     .headline p { font-size: 0.95rem; color: #888; max-width: 450px; line-height: 1.6; }
+    .photo-section { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 0.35in; position: relative; z-index: 1; }
+    .header-photo { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid #2a2a2a; flex-shrink: 0; }
     .rate-box { background: rgba(201,240,107,0.08); border: 1px solid rgba(201,240,107,0.2); border-radius: 12px; padding: 1rem 1.3rem; margin-bottom: 0.35in; display: flex; align-items: center; gap: 1.5rem; position: relative; z-index: 1; }
     .rate-number { font-size: 2.8rem; font-weight: 700; color: #c9f06b; letter-spacing: -2px; line-height: 1; }
     .rate-number span { font-size: 1.4rem; vertical-align: top; }
@@ -55,12 +57,15 @@
 <body>
 <div class="flyer">
   <div class="header">
-    <div class="header-left"><img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo"><div class="name">johnny<span>.</span>gravitt</div></div>
+    <div class="name">johnny<span>.</span>gravitt</div>
     <div class="tag">Astoria, Queens</div>
   </div>
-  <div class="headline">
-    <h1>Tu spa funciona mejor<br>con <em>una llamada</em>.</h1>
-    <p>Limpieza, mandados, lavandería, masajes para el personal y apoyo operativo — todo de una persona confiable. Tú te enfocas en los clientes. Yo me encargo del resto.</p>
+  <div class="photo-section">
+    <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+    <div class="headline" style="margin-bottom: 0;">
+      <h1>Tu spa funciona mejor<br>con <em>una llamada</em>.</h1>
+      <p>Limpieza, mandados, lavandería, masajes para el personal y apoyo operativo — todo de una persona confiable. Tú te enfocas en los clientes. Yo me encargo del resto.</p>
+    </div>
   </div>
   <div class="rate-box">
     <div class="rate-number"><span>$</span>25<span>/hora</span></div>
@@ -97,11 +102,11 @@
     </div>
   </div>
   <div class="why-row">
-    <div class="why-item"><div class="why-emoji">⏰</div><div class="why-text">Siempre puntual</div></div>
-    <div class="why-item"><div class="why-emoji">🤝</div><div class="why-text">Confiable</div></div>
-    <div class="why-item"><div class="why-emoji">📍</div><div class="why-text">Local</div></div>
-    <div class="why-item"><div class="why-emoji">🔇</div><div class="why-text">Discreto</div></div>
-    <div class="why-item"><div class="why-emoji">7</div><div class="why-text">Días/semana</div></div>
+    <div class="why-item"><div class="why-emoji">⏰</div><div class="why-text">Siempre puntual</div>
+    <div class="why-item"><div class="why-emoji">🤝</div><div class="why-text">Confiable</div>
+    <div class="why-item"><div class="why-emoji">📍</div><div class="why-text">Local</div>
+    <div class="why-item"><div class="why-emoji">🔇</div><div class="why-text">Discreto</div>
+    <div class="why-item"><div class="why-emoji">7</div><div class="why-text">Días/semana</div>
   </div>
   <div class="contact-bar">
     <div class="contact-left">

@@ -58,18 +58,22 @@
       z-index: 1;
     }
 
-    .header-left {
+    .photo-section {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1.2rem;
+      margin-bottom: 0.35in;
+      position: relative;
+      z-index: 1;
     }
 
     .header-photo {
-      width: 50px;
-      height: 50px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #2a2a2a;
+      border: 3px solid #2a2a2a;
+      flex-shrink: 0;
     }
 
     .name {
@@ -334,17 +338,17 @@
 
   <!-- HEADER -->
   <div class="header">
-    <div class="header-left">
-      <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
-      <div class="name">johnny<span>.</span>gravitt</div>
-    </div>
+    <div class="name">johnny<span>.</span>gravitt</div>
     <div class="tag">Astoria, Queens</div>
   </div>
 
-  <!-- HEADLINE -->
-  <div class="headline">
-    <h1>Your spa runs better<br>with <em>one call</em>.</h1>
-    <p>Cleaning, errands, laundry, staff massages, and operations support — all from one reliable person. You focus on clients. I handle everything else.</p>
+  <!-- PHOTO + HEADLINE -->
+  <div class="photo-section">
+    <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+    <div class="headline" style="margin-bottom: 0;">
+      <h1>Your spa runs better<br>with <em>one call</em>.</h1>
+      <p>Cleaning, errands, laundry, staff massages, and operations support — all from one reliable person. You focus on clients. I handle everything else.</p>
+    </div>
   </div>
 
   <!-- RATE -->

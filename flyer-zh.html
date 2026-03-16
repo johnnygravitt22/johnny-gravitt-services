@@ -98,6 +98,8 @@
     }
 
     .headline p {
+    .photo-section { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 0.35in; position: relative; z-index: 1; }
+    .header-photo { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid #2a2a2a; flex-shrink: 0; }
       font-size: 0.95rem;
       color: #888;
       max-width: 450px;
@@ -320,14 +322,17 @@
 
   <!-- HEADER -->
   <div class="header">
-    <div class="header-left"><img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo"><div class="name">johnny<span>.</span>gravitt</div></div>
+    <div class="name">johnny<span>.</span>gravitt</div>
     <div class="tag">阿斯托里亚，皇后区</div>
   </div>
 
   <!-- HEADLINE -->
-  <div class="headline">
-    <h1>一个电话，<br>您的水疗中心<em>更顺畅</em>。</h1>
-    <p>清洁、跑腿、洗衣、员工按摩和运营支持——一个可靠的人全部搞定。您专注客户，其余交给我。</p>
+  <div class="photo-section">
+    <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+    <div class="headline" style="margin-bottom: 0;">
+      <h1>一个电话，<br>您的水疗中心<em>更顺畅</em>。</h1>
+      <p>清洁、跑腿、洗衣、员工按摩和运营支持——一个可靠的人全部搞定。您专注客户，其余交给我。</p>
+    </div>
   </div>
 
   <!-- RATE -->
