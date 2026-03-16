@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Johnny Gravitt — Spa Support & Web Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-raised: #141414;
+      --bg-card: #1a1a1a;
+      --border: #2a2a2a;
+      --border-hover: #3a3a3a;
+      --text: #e8e8e8;
+      --text-dim: #888;
+      --text-muted: #555;
+      --accent: #c9f06b;
+      --accent-dim: rgba(201, 240, 107, 0.12);
+      --accent-glow: rgba(201, 240, 107, 0.06);
+      --white: #fff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-size: 1rem; font-weight: 600; color: var(--white);
+      letter-spacing: -0.3px;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-dim);
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 2rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute;
+      top: 0; right: 0; width: 60%; height: 100%;
+      background: radial-gradient(ellipse at 80% 30%, var(--accent-glow) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1100px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr auto; gap: 4rem;
+      align-items: center; position: relative; z-index: 1;
+    }
+    .hero-text { max-width: 600px; }
+    .hero-tag {
+      display: inline-block; padding: 0.35rem 0.9rem;
+      background: var(--accent-dim);
+      border: 1px solid rgba(201, 240, 107, 0.2);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--accent);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 700; color: var(--white);
+      line-height: 1.05; letter-spacing: -1.5px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 em {
+      font-style: normal; color: var(--accent);
+    }
+    .hero-desc {
+      font-size: 1.1rem; color: var(--text-dim);
+      max-width: 480px; line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      padding: 0.9rem 1.8rem;
+      background: var(--accent); color: var(--bg);
+      text-decoration: none; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 600;
+      letter-spacing: -0.2px;
+      transition: all 0.2s;
+    }
+    .hero-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(201, 240, 107, 0.25);
+    }
+    .hero-photo-wrap {
+      width: 280px; height: 340px; border-radius: 16px;
+      overflow: hidden; border: 2px solid var(--border);
+      position: relative;
+    }
+    .hero-photo-wrap::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--bg) 0%, transparent 30%);
+    }
+    .hero-photo {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center center;
+    }
+
+    /* STATS BAR */
+    .stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 2rem;
+      background: var(--bg-raised);
+    }
+    .stats-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+    }
+    .stat { text-align: center; }
+    .stat-value {
+      font-size: 1.8rem; font-weight: 700; color: var(--accent);
+      letter-spacing: -1px;
+    }
+    .stat-label {
+      font-size: 0.75rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-top: 0.2rem;
+    }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent); font-weight: 500; margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700; color: var(--white);
+      letter-spacing: -0.8px; margin-bottom: 0.6rem;
+    }
+    .section-subtitle {
+      font-size: 0.95rem; color: var(--text-dim);
+      max-width: 480px; line-height: 1.7;
+    }
+
+    /* SERVICES */
+    .services { background: var(--bg); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .service-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.8rem;
+      transition: all 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--accent); opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .service-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon {
+      width: 40px; height: 40px;
+      background: var(--accent-dim);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; margin-bottom: 1rem; font-size: 1.2rem;
+    }
+    .service-card h3 {
+      font-size: 1.05rem; font-weight: 600;
+      color: var(--white); margin-bottom: 0.4rem;
+      letter-spacing: -0.3px;
+    }
+    .service-card p {
+      font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;
+    }
+    .service-card--featured {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--accent-dim) 0%, var(--bg-card) 100%);
+      border-color: rgba(201, 240, 107, 0.15);
+      display: flex; align-items: flex-start; gap: 1.5rem;
+    }
+    .service-card--featured .service-icon { margin-bottom: 0; flex-shrink: 0; }
+    .service-card--featured .service-text { flex: 1; }
+
+    /* ABOUT */
+    .about { background: var(--bg-raised); }
+    .about-grid {
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 3rem; align-items: center; margin-top: 2.5rem;
+    }
+    .about-photo {
+      width: 220px; height: 270px; border-radius: 12px;
+      object-fit: cover; object-position: center center;
+      border: 2px solid var(--border);
+    }
+    .about-text p {
+      font-size: 0.95rem; color: var(--text-dim);
+      margin-bottom: 1.5rem; line-height: 1.8;
+    }
+    .trust-row {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.5rem;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.45rem 0.9rem;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem; color: var(--text); font-weight: 500;
+    }
+
+    /* CONTACT */
+    .contact { background: var(--bg); text-align: center; }
+    .contact-card {
+      max-width: 440px; margin: 2.5rem auto 0;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2.5rem;
+    }
+    .contact-phone {
+      display: block; text-decoration: none; color: var(--white);
+      font-size: 2rem; font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 0.3rem; transition: color 0.2s;
+    }
+    .contact-phone:hover { color: var(--accent); }
+    .contact-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--text-muted);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .contact-detail {
+      font-size: 0.88rem; color: var(--text-dim);
+      padding-top: 1.5rem; border-top: 1px solid var(--border);
+    }
+    .contact-note {
+      margin-top: 1.5rem; font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 1.5rem;
+      font-size: 0.72rem; color: var(--text-muted);
+    }
+
+    /* MOBILE NAV */
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+    .nav-toggle span { display: block; width: 20px; height: 1.5px; background: var(--text); margin: 5px 0; transition: 0.2s; }
+
+    /* RESPONSIVE — TABLET */
+    @media (max-width: 900px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo-wrap { display: none; }
+      .stats-inner { flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
+      /* Ensure fade-in elements are visible on touch devices */
+      .fade-in { opacity: 1; transform: none; }
+    }
+
+    /* RESPONSIVE — MOBILE */
+    @media (max-width: 768px) {
+      /* NAV */
+      .nav-inner { padding: 0.75rem 1rem; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(20, 20, 20, 0.98); flex-direction: column;
+        padding: 1.2rem 1.5rem; gap: 0.8rem;
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(20px);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 0.9rem; padding: 0.5rem 0; display: block; }
+      .nav-toggle { display: block; }
+
+      /* HERO — Screen 1: Just the headline. Big, clear, dominant. */
+      .hero {
+        min-height: 100svh; padding: 0 1.5rem;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .hero-inner { gap: 0; text-align: center; }
+      .hero-text { max-width: 100%; }
+      .hero-tag {
+        font-size: 0.6rem; margin-bottom: 1.5rem;
+        padding: 0.3rem 0.7rem; opacity: 0.6;
+      }
+      .hero h1 {
+        font-size: 2.6rem; letter-spacing: -1.2px;
+        line-height: 1.05; margin-bottom: 1.2rem;
+      }
+      .hero-desc {
+        font-size: 0.9rem; line-height: 1.7; margin-bottom: 2.5rem;
+        color: var(--text-dim); max-width: 320px; margin-left: auto; margin-right: auto;
+      }
+      .hero-cta {
+        width: auto; display: inline-flex;
+        padding: 0.85rem 2rem; font-size: 0.88rem;
+        border-radius: 50px;
+      }
+      .hero-photo-wrap { display: none; }
+
+      /* STATS — compact bar between hero and content */
+      .stats { padding: 1.8rem 1.5rem; }
+      .stats-inner {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;
+      }
+      .stat-value { font-size: 1.15rem; }
+      .stat-label { font-size: 0.55rem; letter-spacing: 0.3px; }
+
+      /* SECTIONS — generous vertical padding = one thing per scroll */
+      section { padding: 4rem 1.5rem; }
+      .section-label { font-size: 0.6rem; margin-bottom: 0.5rem; }
+      .section-title { font-size: 1.6rem; letter-spacing: -0.6px; margin-bottom: 0.5rem; }
+      .section-subtitle { font-size: 0.85rem; }
+
+      /* SERVICES — each card gets breathing room */
+      .services-grid { grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; }
+      .service-card { padding: 1.5rem; border-radius: 12px; }
+      .service-card--featured { flex-direction: row; gap: 1rem; }
+      .service-icon { width: 40px; height: 40px; font-size: 1.1rem; margin-bottom: 0.8rem; }
+      .service-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+      .service-card p { font-size: 0.82rem; line-height: 1.6; }
+
+      /* ABOUT — photo + text, centered, spacious */
+      .about-grid {
+        grid-template-columns: 1fr; text-align: center;
+        gap: 2rem; margin-top: 2rem;
+      }
+      .about-photo {
+        margin: 0 auto; width: 180px; height: 220px;
+        border-radius: 12px; border-width: 1px;
+      }
+      .about-text p { font-size: 0.9rem; line-height: 1.75; margin-bottom: 1.5rem; }
+      .trust-row { justify-content: center; gap: 0.5rem; }
+      .trust-item { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
+
+      /* CONTACT — big phone number, clear action */
+      .contact { padding: 5rem 1.5rem; }
+      .contact-card { padding: 2rem 1.5rem; border-radius: 14px; margin-top: 2rem; }
+      .contact-phone { font-size: 1.8rem; }
+      .contact-sub { font-size: 0.65rem; margin-bottom: 1.2rem; }
+      .contact-detail { font-size: 0.82rem; padding-top: 1.2rem; }
+      .contact-note { font-size: 0.78rem; margin-top: 1.2rem; }
+
+      /* FOOTER + LANG */
+      footer { padding: 1.2rem 1rem 4rem; font-size: 0.65rem; }
+      .lang-toggle {
+        bottom: 1rem; left: 50%; right: auto;
+        transform: translateX(-50%);
+        border-radius: 50px;
+        background: rgba(26, 26, 26, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      }
+      .lang-btn { padding: 0.45rem 0.9rem; font-size: 0.65rem; }
+    }
+
+    /* RESPONSIVE — SMALL PHONES */
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 2.2rem; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+      .service-card--featured { flex-direction: column; }
+    }
+
+    /* DEMO SECTION */
+    .demo { background: var(--bg); }
+    .demo-container {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .demo-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group:last-of-type {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="tel"] {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+    .form-group input[type="text"]:focus,
+    .form-group input[type="tel"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .form-group input::placeholder {
+      color: var(--text-muted);
+    }
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0.4rem 0;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .color-palette {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .color-swatch:hover {
+      transform: scale(1.1);
+    }
+    .color-swatch.active {
+      border-color: var(--white);
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px currentColor;
+    }
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .demo-btn {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .demo-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(201, 240, 107, 0.25);
+    }
+    .demo-preview {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-height: 500px;
+      overflow: hidden;
+      position: relative;
+    }
+    .preview-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--text-muted);
+    }
+    .preview-placeholder svg {
+      opacity: 0.5;
+    }
+    .preview-placeholder p {
+      font-size: 0.9rem;
+    }
+    #previewFrame {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+      border: none;
+      display: none;
+    }
+    #previewFrame.active {
+      display: block;
+    }
+    .demo-preview:has(#previewFrame.active) .preview-placeholder {
+      display: none;
+    }
+
+    /* DEMO RESPONSIVE */
+    @media (max-width: 900px) {
+      .demo-container {
+        grid-template-columns: 1fr;
+      }
+      .demo-preview {
+        min-height: 450px;
+      }
+      #previewFrame {
+        min-height: 450px;
+      }
+    }
+    @media (max-width: 768px) {
+      .demo-container {
+        margin-top: 2rem;
+        gap: 1.5rem;
+      }
+      .demo-form {
+        padding: 1.2rem;
+      }
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+      .demo-preview {
+        min-height: 400px;
+      }
+      #previewFrame {
+        min-height: 400px;
+      }
+    }
+
+    /* ANIMATIONS */
+    .fade-in {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* LANGUAGE TOGGLE */
+    .lang-toggle {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 100;
+      display: flex; border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .lang-btn {
+      padding: 0.45rem 0.8rem; border: none;
+      background: transparent; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight: 500;
+      color: var(--text-muted); transition: all 0.2s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); }
+    .lang-btn:hover:not(.active) { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">johnny<span>.</span>gravitt</div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#services" data-en="Services" data-zh="服务项目">Services</a></li>
+        <li><a href="#demo" data-en="Demo" data-zh="演示">Demo</a></li>
+        <li><a href="#about" data-en="About" data-zh="关于我">About</a></li>
+        <li><a href="#contact" data-en="Contact" data-zh="联系方式">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-tag" data-en="Astoria, Queens • Available Now" data-zh="阿斯托里亚，皇后区 • 随时可用">Astoria, Queens • Available Now</div>
+        <h1 data-en="I keep your spa<br>running <em>smooth</em>." data-zh="让您的水疗中心<br>运转<em>顺畅</em>。">I keep your spa<br>running <em>smooth</em>.</h1>
+        <p class="hero-desc" data-en="Cleaning, errands, staff wellness, and modern websites — all from one reliable person. You focus on clients. I handle the rest." data-zh="清洁、跑腿、员工健康和现代网站——都由一个可靠的人完成。您专注于客户，其余交给我。">Cleaning, errands, staff wellness, and modern websites — all from one reliable person. You focus on clients. I handle the rest.</p>
+        <a href="tel:5182097468" class="hero-cta">
+          <span data-en="Call (518) 209-7468" data-zh="致电 (518) 209-7468">Call (518) 209-7468</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+      <div class="hero-photo-wrap">
+        <img src="johnny-real.jpg" alt="Johnny Gravitt" class="hero-photo">
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-value">7</div>
+        <div class="stat-label" data-en="Days a week" data-zh="天/每周">Days a week</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">NYC</div>
+        <div class="stat-label" data-en="Based in Queens" data-zh="皇后区">Based in Queens</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1</div>
+        <div class="stat-label" data-en="Point of contact" data-zh="联系人">Point of contact</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">&lt;5min</div>
+        <div class="stat-label" data-en="Response time" data-zh="响应时间">Response time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="section-inner">
+      <div class="section-label" data-en="// Services" data-zh="// 服务项目">// Services</div>
+      <div class="section-title" data-en="Everything your spa needs." data-zh="您水疗中心需要的一切。">Everything your spa needs.</div>
+      <div class="section-subtitle" data-en="One person. No overhead. No middlemen." data-zh="一个人。无额外开销。没有中间人。">One person. No overhead. No middlemen.</div>
+      <div class="services-grid">
+
+        <div class="service-card fade-in">
+          <div class="service-icon">🧹</div>
+          <h3 data-en="Deep Cleaning" data-zh="深度清洁">Deep Cleaning</h3>
+          <p data-en="Treatment rooms, lobbies, restrooms, back areas — every surface spotless and client-ready." data-zh="治疗室、大堂、洗手间、后勤区域——每个角落一尘不染。">Treatment rooms, lobbies, restrooms, back areas — every surface spotless and client-ready.</p>
+        </div>
+
+        <div class="service-card fade-in">
+          <div class="service-icon">🏃</div>
+          <h3 data-en="Errands & Supplies" data-zh="跑腿和采购">Errands & Supplies</h3>
+          <p data-en="Towels, oils, pharmacy runs, post office — whatever you need, handled fast." data-zh="毛巾、精油、药房、邮局——快速帮您搞定。">Towels, oils, pharmacy runs, post office — whatever you need, handled fast.</p>
+        </div>
+
+        <div class="service-card fade-in">
+          <div class="service-icon">💆</div>
+          <h3 data-en="Staff Wellness" data-zh="员工健康">Staff Wellness</h3>
+          <p data-en="Your therapists care for everyone else. I care for them. Massages to keep the team going." data-zh="您的按摩师照顾客户——我来照顾他们。">Your therapists care for everyone else. I care for them. Massages to keep the team going.</p>
+        </div>
+
+        <div class="service-card fade-in">
+          <div class="service-icon">🧺</div>
+          <h3 data-en="Laundry & Restock" data-zh="洗衣和补充">Laundry & Restock</h3>
+          <p data-en="Towels, robes, sheets — washed, folded, restocked. Supply rooms always organized." data-zh="毛巾、浴袍、床单——清洗、折叠、补充。">Towels, robes, sheets — washed, folded, restocked. Supply rooms always organized.</p>
+        </div>
+
+        <div class="service-card fade-in">
+          <div class="service-icon">⚡</div>
+          <h3 data-en="General Ops" data-zh="综合运营">General Ops</h3>
+          <p data-en="Room turnover, client greeting during rushes, heavy lifting — whatever keeps things moving." data-zh="预约间整理、高峰期接待、搬运——保持运转。">Room turnover, client greeting during rushes, heavy lifting — whatever keeps things moving.</p>
+        </div>
+
+        <div class="service-card service-card--featured fade-in">
+          <div class="service-icon">🌐</div>
+          <div class="service-text">
+            <h3 data-en="Website Design" data-zh="网站设计">Website Design</h3>
+            <p data-en="I'll build or modernize your spa's website — fast, clean, and built to bring in new clients. Mobile-first, professional, included with my services." data-zh="为您建立或翻新网站——快速、简洁、专为吸引新客户设计。移动优先，包含在服务中。">I'll build or modernize your spa's website — fast, clean, and built to bring in new clients. Mobile-first, professional, included with my services.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO / SEE YOUR WEBSITE -->
+  <section class="demo" id="demo">
+    <div class="section-inner">
+      <div class="section-label" data-en="// See Your Website" data-zh="// 查看您的网站">// See Your Website</div>
+      <div class="section-title" data-en="Preview your spa's new look." data-zh="预览您水疗中心的新外观。">Preview your spa's new look.</div>
+      <div class="section-subtitle" data-en="Fill in a few details and see a professional mockup instantly." data-zh="填写几项信息，即刻预览专业设计。">Fill in a few details and see a professional mockup instantly.</div>
+
+      <div class="demo-container fade-in">
+        <form class="demo-form" id="demoForm">
+          <div class="form-group">
+            <label for="spaName" data-en="Spa Name" data-zh="水疗中心名称">Spa Name</label>
+            <input type="text" id="spaName" placeholder="e.g. Serenity Day Spa" required>
+          </div>
+
+          <div class="form-group">
+            <label for="spaPhone" data-en="Phone Number" data-zh="电话号码">Phone Number</label>
+            <input type="tel" id="spaPhone" placeholder="e.g. (555) 123-4567" required>
+          </div>
+
+          <div class="form-group">
+            <label data-en="Services Offered" data-zh="提供的服务">Services Offered</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-item">
+                <input type="checkbox" name="services" value="Massage" checked>
+                <span data-en="Massage" data-zh="按摩">Massage</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="services" value="Facial" checked>
+                <span data-en="Facial" data-zh="面部护理">Facial</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="services" value="Nails">
+                <span data-en="Nails" data-zh="美甲">Nails</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="services" value="Body Treatment">
+                <span data-en="Body Treatment" data-zh="身体护理">Body Treatment</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="services" value="Waxing">
+                <span data-en="Waxing" data-zh="脱毛">Waxing</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-en="Color Theme" data-zh="色彩主题">Color Theme</label>
+            <div class="color-palette">
+              <button type="button" class="color-swatch active" data-color="#7c9a6e" data-name="Sage" style="background: #7c9a6e;" title="Sage"></button>
+              <button type="button" class="color-swatch" data-color="#b8a9c9" data-name="Lavender" style="background: #b8a9c9;" title="Lavender"></button>
+              <button type="button" class="color-swatch" data-color="#d4a5a5" data-name="Rose" style="background: #d4a5a5;" title="Rose"></button>
+              <button type="button" class="color-swatch" data-color="#89b4c4" data-name="Ocean" style="background: #89b4c4;" title="Ocean"></button>
+              <button type="button" class="color-swatch" data-color="#c9b896" data-name="Sand" style="background: #c9b896;" title="Sand"></button>
+              <button type="button" class="color-swatch" data-color="#e8b4b8" data-name="Blush" style="background: #e8b4b8;" title="Blush"></button>
+            </div>
+          </div>
+
+          <button type="submit" class="demo-btn" data-en="Generate Preview" data-zh="生成预览">Generate Preview</button>
+        </form>
+
+        <div class="demo-preview" id="demoPreview">
+          <div class="preview-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <p data-en="Your website preview will appear here" data-zh="您的网站预览将在此显示">Your website preview will appear here</p>
+          </div>
+          <iframe id="previewFrame" title="Website Preview"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="section-inner">
+      <div class="section-label" data-en="// About" data-zh="// 关于我">// About</div>
+      <div class="section-title" data-en="Not an agency. Just me." data-zh="不是公司。只有我。">Not an agency. Just me.</div>
+      <div class="about-grid fade-in">
+        <img src="johnny-real.jpg" alt="Johnny Gravitt" class="about-photo">
+        <div class="about-text">
+          <p data-en="I'm Johnny — based in Astoria, Queens. I work with spas directly because I get what it takes to run one: the long hours, the constant need for clean spaces, and keeping your people happy. I show up, handle what needs handling, and stay out of the way." data-zh="我是 Johnny——住在皇后区阿斯托里亚。我直接与水疗中心合作，因为我了解经营的需求：长时间工作、持续的清洁需求和保持团队活力。我来了，做需要做的事，不打扰您。">I'm Johnny — based in Astoria, Queens. I work with spas directly because I get what it takes to run one: the long hours, the constant need for clean spaces, and keeping your people happy. I show up, handle what needs handling, and stay out of the way.</p>
+          <div class="trust-row">
+            <div class="trust-item" data-en="⏰ Always on time" data-zh="⏰ 永远准时">⏰ Always on time</div>
+            <div class="trust-item" data-en="🤝 Reliable" data-zh="🤝 可靠">🤝 Reliable</div>
+            <div class="trust-item" data-en="📍 Local" data-zh="📍 本地">📍 Local</div>
+            <div class="trust-item" data-en="🔇 Low-key" data-zh="🔇 低调">🔇 Low-key</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="section-inner">
+      <div class="section-label" data-en="// Contact" data-zh="// 联系我">// Contact</div>
+      <div class="section-title" data-en="Let's talk." data-zh="聊聊吧。">Let's talk.</div>
+      <div class="contact-card fade-in">
+        <a href="tel:5182097468" class="contact-phone">(518) 209-7468</a>
+        <div class="contact-sub" data-en="Call or Text" data-zh="电话或短信">Call or Text</div>
+        <div class="contact-detail" data-en="Astoria, Queens, NY — 7 days a week" data-zh="纽约皇后区阿斯托里亚——每周7天">Astoria, Queens, NY — 7 days a week</div>
+      </div>
+      <p class="contact-note" data-en="I usually respond within minutes." data-zh="我通常几分钟内回复。">I usually respond within minutes.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    johnny.gravitt — astoria, queens
+  </footer>
+
+  <!-- LANGUAGE TOGGLE -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn" onclick="setLang('ko')">한국</button>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    window.addEventListener('scroll', () => {
+      document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+    });
+
+    const translations = {
+      es: {
+        'Astoria, Queens • Available Now': 'Astoria, Queens • Disponible Ahora',
+        'I keep your spa<br>running <em>smooth</em>.': 'Mantengo tu spa<br>funcionando <em>perfectamente</em>.',
+        'Cleaning, errands, staff wellness, and modern websites — all from one reliable person. You focus on clients. I handle the rest.': 'Limpieza, mandados, bienestar del personal y sitios web modernos — todo de una persona confiable. Tú te enfocas en los clientes. Yo me encargo del resto.',
+        'Call (518) 209-7468': 'Llamar (518) 209-7468',
+        'Days a week': 'Días a la semana',
+        'Based in Queens': 'En Queens',
+        'Point of contact': 'Punto de contacto',
+        'Response time': 'Tiempo de respuesta',
+        '// Services': '// Servicios',
+        'Everything your spa needs.': 'Todo lo que tu spa necesita.',
+        'One person. No overhead. No middlemen.': 'Una persona. Sin gastos extra. Sin intermediarios.',
+        'Deep Cleaning': 'Limpieza Profunda',
+        'Treatment rooms, lobbies, restrooms, back areas — every surface spotless and client-ready.': 'Salas de tratamiento, vestíbulos, baños, áreas traseras — cada superficie impecable.',
+        'Errands & Supplies': 'Mandados y Suministros',
+        'Towels, oils, pharmacy runs, post office — whatever you need, handled fast.': 'Toallas, aceites, farmacia, correo — lo que necesites, rápido.',
+        'Staff Wellness': 'Bienestar del Personal',
+        'Your therapists care for everyone else. I care for them. Massages to keep the team going.': 'Tus terapeutas cuidan a todos. Yo los cuido a ellos.',
+        'Laundry & Restock': 'Lavandería y Reposición',
+        'Towels, robes, sheets — washed, folded, restocked. Supply rooms always organized.': 'Toallas, batas, sábanas — lavadas, dobladas, repuestas.',
+        'General Ops': 'Operaciones Generales',
+        'Room turnover, client greeting during rushes, heavy lifting — whatever keeps things moving.': 'Cambio de salas, recepción de clientes, cargas pesadas — lo que sea necesario.',
+        'Website Design': 'Diseño Web',
+        "I'll build or modernize your spa's website — fast, clean, and built to bring in new clients. Mobile-first, professional, included with my services.": 'Construiré o modernizaré el sitio web de tu spa — rápido, limpio y diseñado para atraer nuevos clientes.',
+        '// About': '// Sobre Mí',
+        'Not an agency. Just me.': 'No soy una agencia. Solo yo.',
+        "I'm Johnny — based in Astoria, Queens. I work with spas directly because I get what it takes to run one: the long hours, the constant need for clean spaces, and keeping your people happy. I show up, handle what needs handling, and stay out of the way.": 'Soy Johnny — de Astoria, Queens. Trabajo directamente con spas porque entiendo lo que se necesita: las largas horas, la necesidad constante de espacios limpios y mantener a tu equipo feliz.',
+        '⏰ Always on time': '⏰ Siempre puntual',
+        '🤝 Reliable': '🤝 Confiable',
+        '📍 Local': '📍 Local',
+        '🔇 Low-key': '🔇 Discreto',
+        '// Contact': '// Contacto',
+        "Let's talk.": 'Hablemos.',
+        'Call or Text': 'Llama o Envía Mensaje',
+        'Astoria, Queens, NY — 7 days a week': 'Astoria, Queens, NY — 7 días a la semana',
+        'I usually respond within minutes.': 'Generalmente respondo en minutos.',
+        'Services': 'Servicios',
+        'About': 'Sobre Mí',
+        'Contact': 'Contacto',
+        'Demo': 'Demo',
+        '// See Your Website': '// Ve Tu Sitio Web',
+        "Preview your spa's new look.": 'Vista previa del nuevo look de tu spa.',
+        'Fill in a few details and see a professional mockup instantly.': 'Completa algunos detalles y ve un diseño profesional al instante.',
+        'Spa Name': 'Nombre del Spa',
+        'Phone Number': 'Número de Teléfono',
+        'Services Offered': 'Servicios Ofrecidos',
+        'Massage': 'Masaje',
+        'Facial': 'Facial',
+        'Nails': 'Uñas',
+        'Body Treatment': 'Tratamiento Corporal',
+        'Waxing': 'Depilación',
+        'Color Theme': 'Tema de Color',
+        'Generate Preview': 'Generar Vista Previa',
+        'Your website preview will appear here': 'La vista previa de tu sitio aparecerá aquí',
+      },
+      ko: {
+        'Astoria, Queens • Available Now': '아스토리아, 퀸즈 • 지금 가능',
+        'I keep your spa<br>running <em>smooth</em>.': '스파를<br><em>원활하게</em> 운영합니다.',
+        'Cleaning, errands, staff wellness, and modern websites — all from one reliable person. You focus on clients. I handle the rest.': '청소, 심부름, 직원 건강관리, 현대적 웹사이트 — 한 사람이 모두 담당. 고객에게 집중하세요. 나머지는 제가 합니다.',
+        'Call (518) 209-7468': '전화 (518) 209-7468',
+        'Days a week': '일/주',
+        'Based in Queens': '퀸즈 거주',
+        'Point of contact': '담당자',
+        'Response time': '응답 시간',
+        '// Services': '// 서비스',
+        'Everything your spa needs.': '스파에 필요한 모든 것.',
+        'One person. No overhead. No middlemen.': '한 사람. 추가 비용 없음. 중간 없음.',
+        'Deep Cleaning': '깊은 청소',
+        'Treatment rooms, lobbies, restrooms, back areas — every surface spotless and client-ready.': '시술실, 로비, 화장실, 후방 — 모든 표면 깨끗하게.',
+        'Errands & Supplies': '심부름 및 물품',
+        'Towels, oils, pharmacy runs, post office — whatever you need, handled fast.': '수건, 오일, 약국, 우체국 — 빠르게 처리.',
+        'Staff Wellness': '직원 건강',
+        'Your therapists care for everyone else. I care for them. Massages to keep the team going.': '치료사들은 고객을 돌봅니다. 제가 그들을 돌봅니다.',
+        'Laundry & Restock': '세탁 및 보충',
+        'Towels, robes, sheets — washed, folded, restocked. Supply rooms always organized.': '수건, 가운, 시트 — 세탁, 정리, 보충.',
+        'General Ops': '종합 운영',
+        'Room turnover, client greeting during rushes, heavy lifting — whatever keeps things moving.': '방 정리, 고객 맞이, 물건 운반 — 운영 유지.',
+        'Website Design': '웹사이트 디자인',
+        "I'll build or modernize your spa's website — fast, clean, and built to bring in new clients. Mobile-first, professional, included with my services.": '스파 웹사이트 제작 또는 리뉴얼 — 빠르고, 깔끔하고, 신규 고객 유치. 서비스 포함.',
+        '// About': '// 소개',
+        'Not an agency. Just me.': '에이전시 아닙니다. 저 혼자입니다.',
+        "I'm Johnny — based in Astoria, Queens. I work with spas directly because I get what it takes to run one: the long hours, the constant need for clean spaces, and keeping your people happy. I show up, handle what needs handling, and stay out of the way.": '저는 Johnny — 퀸즈 아스토리아 거주. 스파와 직접 일합니다. 긴 시간, 깨끗한 공간, 직원 관리가 뭔지 압니다. 와서 할 일 하고, 방해하지 않습니다.',
+        '⏰ Always on time': '⏰ 항상 정시',
+        '🤝 Reliable': '🤝 신뢰',
+        '📍 Local': '📍 현지',
+        '🔇 Low-key': '🔇 조용',
+        '// Contact': '// 연락',
+        "Let's talk.": '연락주세요.',
+        'Call or Text': '전화 또는 문자',
+        'Astoria, Queens, NY — 7 days a week': '뉴욕 퀸즈 아스토리아 — 주 7일',
+        'I usually respond within minutes.': '보통 몇 분 안에 답변.',
+        'Services': '서비스',
+        'About': '소개',
+        'Contact': '연락처',
+        'Demo': '데모',
+        '// See Your Website': '// 웹사이트 미리보기',
+        "Preview your spa's new look.": '스파의 새로운 모습을 미리보세요.',
+        'Fill in a few details and see a professional mockup instantly.': '몇 가지 정보를 입력하면 전문적인 목업을 바로 확인하세요.',
+        'Spa Name': '스파 이름',
+        'Phone Number': '전화번호',
+        'Services Offered': '제공 서비스',
+        'Massage': '마사지',
+        'Facial': '페이셜',
+        'Nails': '네일',
+        'Body Treatment': '바디 트리트먼트',
+        'Waxing': '왁싱',
+        'Color Theme': '색상 테마',
+        'Generate Preview': '미리보기 생성',
+        'Your website preview will appear here': '웹사이트 미리보기가 여기에 표시됩니다',
+      }
+    };
+
+    function setLang(lang) {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (lang === 'en') {
+          el.innerHTML = el.getAttribute('data-en');
+        } else if (lang === 'zh') {
+          el.innerHTML = el.getAttribute('data-zh') || el.getAttribute('data-en');
+        } else if (lang === 'ko' || lang === 'es') {
+          const key = el.getAttribute('data-en');
+          el.innerHTML = translations[lang][key] || key;
+        }
+      });
+    }
+
+    // Demo website generator
+    let selectedColor = '#7c9a6e';
+    let selectedColorName = 'Sage';
+
+    document.querySelectorAll('.color-swatch').forEach(swatch => {
+      swatch.addEventListener('click', function() {
+        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+        this.classList.add('active');
+        selectedColor = this.dataset.color;
+        selectedColorName = this.dataset.name;
+      });
+    });
+
+    document.getElementById('demoForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const spaName = document.getElementById('spaName').value;
+      const spaPhone = document.getElementById('spaPhone').value;
+      const accentColor = selectedColor;
+      const checkedServices = Array.from(document.querySelectorAll('input[name="services"]:checked'))
+        .map(cb => cb.value);
+
+      // Parse color for rgba variations
+      const r = parseInt(accentColor.slice(1,3),16);
+      const g = parseInt(accentColor.slice(3,5),16);
+      const b = parseInt(accentColor.slice(5,7),16);
+
+      const serviceData = {
+        'Massage': { icon: '🌿', desc: 'Swedish, deep tissue, hot stone & aromatherapy massage by certified therapists.', price: 'From $85' },
+        'Facial': { icon: '✨', desc: 'Customized facials using premium products to rejuvenate and restore your natural glow.', price: 'From $95' },
+        'Nails': { icon: '💅', desc: 'Luxurious manicures & pedicures with the finest polishes and nail care treatments.', price: 'From $45' },
+        'Body Treatment': { icon: '🧖', desc: 'Detoxifying wraps, exfoliating scrubs & nourishing body treatments.', price: 'From $120' },
+        'Waxing': { icon: '🌸', desc: 'Gentle, effective hair removal for silky smooth results that last.', price: 'From $35' }
+      };
+
+      const servicesHTML = checkedServices.map(service => `
+        <div class="service-card">
+          <span class="service-icon">${serviceData[service].icon}</span>
+          <h3>${service}</h3>
+          <p>${serviceData[service].desc}</p>
+          <span class="service-price">${serviceData[service].price}</span>
+        </div>
+      `).join('');
+
+      const mockupHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${spaName}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --accent: ${accentColor};
+      --accent-light: rgba(${r}, ${g}, ${b}, 0.15);
+      --accent-soft: rgba(${r}, ${g}, ${b}, 0.08);
+      --cream: #faf9f7;
+      --warm-white: #ffffff;
+      --text-dark: #2d2d2d;
+      --text-medium: #5a5a5a;
+      --text-light: #8a8a8a;
+      --border: #e8e6e3;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-dark);
+      background: var(--cream);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--warm-white);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav a {
+      text-decoration: none;
+      color: var(--text-medium);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--accent-soft) 0%, var(--cream) 50%, rgba(${r}, ${g}, ${b}, 0.05) 100%);
+      padding: 5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(ellipse, var(--accent-light) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-medium);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      font-weight: 300;
+    }
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 50px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(${r}, ${g}, ${b}, 0.3);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(${r}, ${g}, ${b}, 0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      box-shadow: none;
+      margin-left: 1rem;
+    }
+
+    /* FEATURES BAR */
+    .features {
+      background: var(--warm-white);
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .feature {
+      text-align: center;
+    }
+    .feature-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+    }
+    .feature span {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* SERVICES */
+    .services {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      border-color: var(--accent);
+    }
+    .service-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--text-medium);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .service-price {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* ABOUT */
+    .about {
+      background: var(--warm-white);
+      padding: 5rem 2rem;
+    }
+    .about-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .about h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .about p {
+      font-size: 1rem;
+      color: var(--text-medium);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .about-features {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .about-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-medium);
+    }
+    .about-feature::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* CTA SECTION */
+    .cta {
+      background: linear-gradient(135deg, var(--accent) 0%, rgba(${r}, ${g}, ${b}, 0.85) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      color: white;
+    }
+    .cta h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .cta p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+    .cta-phone {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+    .btn-white {
+      background: white;
+      color: var(--accent);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-dark);
+      color: rgba(255,255,255,0.7);
+      padding: 3rem 2rem 1.5rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    .footer-hours {
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.5rem;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      .header { flex-direction: column; gap: 1rem; }
+      .nav { gap: 1.5rem; }
+      .hero { padding: 3rem 1.5rem; }
+      .features { gap: 1.5rem; padding: 1.5rem; }
+      .services { padding: 3rem 1.5rem; }
+      .btn-outline { margin: 1rem 0 0 0; display: block; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">${spaName}</div>
+    <nav class="nav">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-tag">Welcome to ${spaName}</div>
+    <h1>Relax. Restore.<br>Rejuvenate.</h1>
+    <p>Escape the everyday and discover a sanctuary of wellness. Experience treatments designed to nurture your body, mind, and spirit.</p>
+    <a href="#book" class="btn">Book Your Visit</a>
+    <a href="#services" class="btn btn-outline">View Services</a>
+  </section>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🌿</div>
+      <span>Natural Products</span>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⭐</div>
+      <span>5-Star Rated</span>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎁</div>
+      <span>Gift Cards</span>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📅</div>
+      <span>Easy Booking</span>
+    </div>
+  </div>
+
+  <section class="services" id="services">
+    <div class="section-header">
+      <div class="section-tag">Our Services</div>
+      <h2>Treatments & Experiences</h2>
+    </div>
+    <div class="services-grid">
+      ${servicesHTML}
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-inner">
+      <div class="section-tag">About Us</div>
+      <h2>Your Wellness Journey Starts Here</h2>
+      <p>At ${spaName}, we believe everyone deserves moments of peace and restoration. Our skilled therapists combine time-honored techniques with modern expertise to create personalized experiences that leave you feeling renewed.</p>
+      <div class="about-features">
+        <span class="about-feature">Licensed Therapists</span>
+        <span class="about-feature">Premium Products</span>
+        <span class="about-feature">Serene Environment</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <h2>Ready to Unwind?</h2>
+    <p>Book your appointment today and experience the difference.</p>
+    <a href="#call" class="cta-phone">${spaPhone}</a>
+    <a href="#call" class="btn btn-white">Call Now</a>
+  </section>
+
+  <footer>
+    <div class="footer-logo">${spaName}</div>
+    <div class="footer-hours">
+      Monday – Friday: 9am – 8pm<br>
+      Saturday: 9am – 6pm<br>
+      Sunday: 10am – 5pm
+    </div>
+    <div class="footer-bottom">
+      © ${new Date().getFullYear()} ${spaName}. All rights reserved.
+    </div>
+  </footer>
+
+  <scr` + `ipt>
+    document.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') {
+        e.preventDefault();
+        const href = e.target.getAttribute('href');
+        if (href && href.startsWith('#') && href.length > 1) {
+          const target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  </scr` + `ipt>
+</body>
+</html>`;
+
+      const iframe = document.getElementById('previewFrame');
+      iframe.srcdoc = mockupHTML;
+      iframe.classList.add('active');
+
+      // Scroll to preview on mobile
+      if (window.innerWidth <= 900) {
+        setTimeout(() => {
+          document.getElementById('demoPreview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    });
+  </script>
+
+</body>
+</html>
