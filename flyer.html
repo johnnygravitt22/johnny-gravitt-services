@@ -6,11 +6,7 @@
   <title>Johnny Gravitt — Spa Support Services</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @page {
-      size: letter;
-      margin: 0;
-    }
-
+    @page { size: letter; margin: 0; }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -29,305 +25,236 @@
       width: 8.5in;
       min-height: 11in;
       background: #0a0a0a;
-      padding: 0.6in 0.7in;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
     }
 
-    /* Subtle accent glow */
-    .flyer::before {
-      content: '';
-      position: absolute;
-      top: -20%;
-      right: -10%;
-      width: 50%;
-      height: 60%;
-      background: radial-gradient(ellipse, rgba(201, 240, 107, 0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    /* HEADER */
-    .header {
+    /* ===== TOP HERO: Photo + Identity ===== */
+    .hero {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.4in;
+      align-items: stretch;
+      min-height: 280px;
       position: relative;
-      z-index: 1;
     }
 
-    .headline-row {
+    .hero-content {
+      flex: 1;
+      padding: 0.6in 0.5in 0.4in 0.7in;
       display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      margin-bottom: 0.35in;
+      flex-direction: column;
+      justify-content: center;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
-    .header-photo {
-      width: 140px;
-      height: 170px;
-      object-fit: cover;
-      border-radius: 12px;
-      flex-shrink: 0;
-    }
-
-    .name {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.5px;
-    }
-    .name span { color: #c9f06b; }
-
-    .tag {
+    .hero-tag {
       font-size: 0.6rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #c9f06b;
-      background: rgba(201, 240, 107, 0.1);
-      border: 1px solid rgba(201, 240, 107, 0.2);
-      padding: 0.3rem 0.7rem;
-      border-radius: 4px;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
     }
 
-    /* HEADLINE */
-    .headline {
-      margin-bottom: 0.35in;
-      position: relative;
-      z-index: 1;
-    }
-
-    .headline h1 {
-      font-size: 2.6rem;
+    .hero h1 {
+      font-size: 2.4rem;
       font-weight: 700;
       color: #fff;
-      line-height: 1.1;
+      line-height: 1.08;
       letter-spacing: -1.5px;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
-    .headline h1 em {
-      font-style: normal;
-      color: #c9f06b;
-    }
+    .hero h1 em { font-style: normal; color: #c9f06b; }
 
-    .headline p {
-      font-size: 0.95rem;
-      color: #888;
-      max-width: 450px;
+    .hero-desc {
+      font-size: 0.85rem;
+      color: #999;
+      max-width: 380px;
       line-height: 1.6;
     }
 
-    /* RATE BOX */
+    .hero-photo {
+      width: 240px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* Fade photo into the dark background */
+    .hero-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, #0a0a0a 0%, transparent 35%),
+        linear-gradient(to top, #0a0a0a 0%, transparent 25%);
+      pointer-events: none;
+    }
+
+    /* Subtle glow behind photo area */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 300px; height: 100%;
+      background: radial-gradient(ellipse at 80% 40%, rgba(201,240,107,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ===== BODY CONTENT ===== */
+    .body {
+      padding: 0 0.7in;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* RATE */
     .rate-box {
-      background: rgba(201, 240, 107, 0.08);
-      border: 1px solid rgba(201, 240, 107, 0.2);
-      border-radius: 12px;
-      padding: 1rem 1.3rem;
-      margin-bottom: 0.35in;
+      background: rgba(201,240,107,0.08);
+      border: 1px solid rgba(201,240,107,0.2);
+      border-radius: 10px;
+      padding: 0.7rem 1.1rem;
+      margin-bottom: 0.3in;
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-      position: relative;
-      z-index: 1;
+      gap: 1.2rem;
     }
 
     .rate-number {
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       font-weight: 700;
       color: #c9f06b;
       letter-spacing: -2px;
       line-height: 1;
     }
-    .rate-number span {
-      font-size: 1.4rem;
-      vertical-align: top;
-    }
+    .rate-number span { font-size: 1.2rem; vertical-align: top; }
 
-    .rate-details {
-      flex: 1;
-    }
-    .rate-details .rate-label {
-      font-size: 1rem;
+    .rate-label {
+      font-size: 0.9rem;
       font-weight: 600;
       color: #fff;
-      margin-bottom: 0.15rem;
+      margin-bottom: 0.1rem;
     }
-    .rate-details .rate-sub {
-      font-size: 0.8rem;
-      color: #888;
-    }
+    .rate-sub { font-size: 0.75rem; color: #777; }
 
-    /* SERVICES GRID */
+    /* SERVICES */
     .services-label {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #c9f06b;
-      margin-bottom: 0.6rem;
-      position: relative;
-      z-index: 1;
+      margin-bottom: 0.5rem;
     }
 
     .services-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-bottom: 0.35in;
-      position: relative;
-      z-index: 1;
+      gap: 0.4rem;
+      margin-bottom: 0.25in;
     }
 
     .service {
-      background: #141414;
-      border: 1px solid #2a2a2a;
-      border-radius: 10px;
-      padding: 0.7rem 0.9rem;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 0.6rem 0.75rem;
       display: flex;
       align-items: flex-start;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
+    .service-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+    .service h3 { font-size: 0.78rem; font-weight: 600; color: #fff; margin-bottom: 0.1rem; }
+    .service p { font-size: 0.65rem; color: #777; line-height: 1.4; }
 
-    .service-icon {
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-
-    .service h3 {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 0.15rem;
-    }
-    .service p {
-      font-size: 0.7rem;
-      color: #888;
-      line-height: 1.4;
-    }
-
-    /* FEATURED SERVICE */
     .service-featured {
       grid-column: 1 / -1;
-      background: linear-gradient(135deg, rgba(201, 240, 107, 0.08) 0%, #141414 100%);
-      border-color: rgba(201, 240, 107, 0.15);
+      background: linear-gradient(135deg, rgba(201,240,107,0.06) 0%, #111 100%);
+      border-color: rgba(201,240,107,0.12);
     }
 
-    /* WHY ME */
-    .why-row {
+    /* TRUST ROW */
+    .trust-row {
       display: flex;
-      gap: 0.8rem;
-      margin-bottom: 0.35in;
-      position: relative;
-      z-index: 1;
+      gap: 0.6rem;
+      margin-bottom: 0.25in;
     }
-
-    .why-item {
+    .trust-item {
       flex: 1;
       text-align: center;
-      padding: 0.6rem;
-      background: #141414;
-      border: 1px solid #2a2a2a;
-      border-radius: 10px;
+      padding: 0.45rem;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
     }
+    .trust-emoji { font-size: 1rem; margin-bottom: 0.15rem; }
+    .trust-text { font-size: 0.65rem; color: #bbb; font-weight: 500; }
 
-    .why-item .why-emoji {
-      font-size: 1.2rem;
-      margin-bottom: 0.2rem;
-    }
-    .why-item .why-text {
-      font-size: 0.7rem;
-      color: #ccc;
-      font-weight: 500;
-    }
-
-    /* CONTACT FOOTER */
+    /* CONTACT */
     .contact-bar {
-      margin-top: auto;
-      background: #141414;
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      padding: 1rem 1.3rem;
+      margin-top: 0.15in;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 10px;
+      padding: 0.8rem 1.1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: relative;
-      z-index: 1;
     }
-
-    .contact-left .contact-phone {
-      font-size: 1.6rem;
+    .contact-phone {
+      font-size: 1.5rem;
       font-weight: 700;
       color: #fff;
       letter-spacing: -0.5px;
     }
-    .contact-left .contact-sub {
-      font-size: 0.7rem;
-      color: #888;
-      margin-top: 0.1rem;
-    }
+    .contact-sub { font-size: 0.65rem; color: #777; margin-top: 0.1rem; }
+    .contact-right { text-align: right; }
+    .contact-area { font-size: 0.8rem; color: #ccc; font-weight: 500; }
+    .contact-web { font-size: 0.6rem; color: #444; margin-top: 0.1rem; }
 
-    .contact-right {
-      text-align: right;
-    }
-    .contact-right .contact-area {
-      font-size: 0.85rem;
-      color: #ccc;
-      font-weight: 500;
-    }
-    .contact-right .contact-web {
-      font-size: 0.65rem;
-      color: #555;
-      margin-top: 0.15rem;
-    }
-
-    /* MULTILINGUAL FOOTER */
+    /* FOOTER */
     .lang-bar {
-      margin-top: 0.5rem;
+      padding: 0.4rem 0.7in;
       text-align: center;
-      padding: 0.5rem;
-      border-top: 1px solid #1a1a1a;
-      position: relative;
-      z-index: 1;
     }
-    .lang-bar p {
-      font-size: 0.65rem;
-      color: #555;
-      line-height: 1.6;
-    }
+    .lang-bar p { font-size: 0.6rem; color: #444; }
 
-    /* PRINT STYLES */
+    /* PRINT */
     @media print {
-      body {
-        background: #0a0a0a;
-        padding: 0;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .flyer {
-        width: 100%;
-        height: 100vh;
-        page-break-after: avoid;
-      }
+      body { background: #0a0a0a; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .flyer { width: 100%; height: 100vh; }
     }
 
-    /* MOBILE VIEW */
+    /* MOBILE */
     @media (max-width: 768px) {
       body { padding: 0.5rem; }
-      .flyer {
-        width: 100%;
-        min-height: auto;
-        padding: 1.5rem;
+      .flyer { width: 100%; min-height: auto; }
+      .hero { flex-direction: column-reverse; min-height: auto; }
+      .hero-photo { width: 100%; height: 200px; }
+      .hero-photo::after {
+        background:
+          linear-gradient(to top, #0a0a0a 0%, transparent 40%),
+          linear-gradient(to right, transparent, transparent);
       }
-      .headline h1 { font-size: 2rem; }
+      .hero-content { padding: 1.5rem; }
+      .hero h1 { font-size: 2rem; }
+      .body { padding: 0 1.5rem; }
       .services-grid { grid-template-columns: 1fr; }
-      .why-row { flex-wrap: wrap; }
-      .why-item { flex: 1 1 45%; }
-      .contact-bar { flex-direction: column; text-align: center; gap: 0.8rem; }
+      .trust-row { flex-wrap: wrap; }
+      .trust-item { flex: 1 1 45%; }
+      .contact-bar { flex-direction: column; text-align: center; gap: 0.6rem; }
       .contact-right { text-align: center; }
+      .lang-bar { padding: 0.4rem 1.5rem; }
     }
   </style>
 </head>
@@ -335,123 +262,85 @@
 
 <div class="flyer">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="name">johnny<span>.</span>gravitt</div>
-    <div class="tag">Astoria, Queens</div>
-  </div>
-
-  <!-- HEADLINE -->
-  <div class="headline-row">
-    <div class="headline">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">Astoria, Queens · Available Now</div>
       <h1>Your spa runs better<br>with <em>one call</em>.</h1>
-      <p>Cleaning, errands, laundry, staff massages, and operations support — all from one reliable person. You focus on clients. I handle everything else.</p>
+      <p class="hero-desc">Cleaning, errands, laundry, staff massages, and operations support — all from one reliable person. You focus on clients. I handle everything else.</p>
     </div>
-    <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
-  </div>
-
-  <!-- RATE -->
-  <div class="rate-box">
-    <div class="rate-number"><span>$</span>25<span>/hr</span></div>
-    <div class="rate-details">
-      <div class="rate-label">Everything included. One rate.</div>
-      <div class="rate-sub">3-hour minimum per visit • Flexible scheduling</div>
+    <div class="hero-photo">
+      <img src="johnny-real.jpg" alt="Johnny Gravitt">
     </div>
   </div>
 
-  <!-- SERVICES -->
-  <div class="services-label">// What I do</div>
-  <div class="services-grid">
+  <!-- BODY -->
+  <div class="body">
 
-    <div class="service">
-      <div class="service-icon">🧹</div>
+    <!-- RATE -->
+    <div class="rate-box">
+      <div class="rate-number"><span>$</span>25<span>/hr</span></div>
       <div>
-        <h3>Deep Cleaning</h3>
-        <p>Treatment rooms, lobbies, restrooms — every surface spotless and client-ready.</p>
+        <div class="rate-label">Everything included. One rate.</div>
+        <div class="rate-sub">3-hour minimum per visit · Flexible scheduling</div>
       </div>
     </div>
 
-    <div class="service">
-      <div class="service-icon">🏃</div>
-      <div>
-        <h3>Errands & Supplies</h3>
-        <p>Towels, oils, pharmacy runs, post office — whatever you need, fast.</p>
+    <!-- SERVICES -->
+    <div class="services-label">// What I do</div>
+    <div class="services-grid">
+      <div class="service">
+        <div class="service-icon">🧹</div>
+        <div><h3>Deep Cleaning</h3><p>Treatment rooms, lobbies, restrooms — every surface spotless and client-ready.</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">🏃</div>
+        <div><h3>Errands & Supplies</h3><p>Towels, oils, pharmacy runs, post office — whatever you need, fast.</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">💆</div>
+        <div><h3>Staff Massages</h3><p>Your therapists take care of everyone else. I take care of them.</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">🧺</div>
+        <div><h3>Laundry & Restock</h3><p>Towels, robes, sheets — washed, folded, restocked. Always organized.</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">⚡</div>
+        <div><h3>General Ops</h3><p>Room turnover, greeting clients, heavy lifting — whatever keeps things moving.</p></div>
+      </div>
+      <div class="service service-featured">
+        <div class="service-icon">🌐</div>
+        <div><h3>Website Design</h3><p>I'll build or modernize your spa's website — mobile-first, professional, built to bring in new clients. Ask for details.</p></div>
       </div>
     </div>
 
-    <div class="service">
-      <div class="service-icon">💆</div>
-      <div>
-        <h3>Staff Massages</h3>
-        <p>Your therapists take care of everyone else. I take care of them.</p>
-      </div>
+    <!-- TRUST -->
+    <div class="trust-row">
+      <div class="trust-item"><div class="trust-emoji">⏰</div><div class="trust-text">Always on time</div></div>
+      <div class="trust-item"><div class="trust-emoji">🤝</div><div class="trust-text">Reliable</div></div>
+      <div class="trust-item"><div class="trust-emoji">📍</div><div class="trust-text">Local</div></div>
+      <div class="trust-item"><div class="trust-emoji">🔇</div><div class="trust-text">Low-key</div></div>
+      <div class="trust-item"><div class="trust-emoji">7</div><div class="trust-text">Days a week</div></div>
     </div>
 
-    <div class="service">
-      <div class="service-icon">🧺</div>
+    <!-- CONTACT -->
+    <div class="contact-bar">
       <div>
-        <h3>Laundry & Restock</h3>
-        <p>Towels, robes, sheets — washed, folded, restocked. Always organized.</p>
+        <div class="contact-phone">(518) 209-7468</div>
+        <div class="contact-sub">Call or text — I usually respond within minutes</div>
       </div>
-    </div>
-
-    <div class="service">
-      <div class="service-icon">⚡</div>
-      <div>
-        <h3>General Ops</h3>
-        <p>Room turnover, greeting clients, heavy lifting — whatever keeps things moving.</p>
-      </div>
-    </div>
-
-    <div class="service service-featured">
-      <div class="service-icon">🌐</div>
-      <div>
-        <h3>Website Design</h3>
-        <p>I'll build or modernize your spa's website — mobile-first, professional, built to bring in new clients. Ask for details.</p>
+      <div class="contact-right">
+        <div class="contact-area">Astoria, Queens, NY</div>
+        <div class="contact-web">johnnygravitt22.github.io/johnny-gravitt-services</div>
       </div>
     </div>
 
   </div>
 
-  <!-- WHY ME -->
-  <div class="why-row">
-    <div class="why-item">
-      <div class="why-emoji">⏰</div>
-      <div class="why-text">Always on time</div>
-    </div>
-    <div class="why-item">
-      <div class="why-emoji">🤝</div>
-      <div class="why-text">Reliable</div>
-    </div>
-    <div class="why-item">
-      <div class="why-emoji">📍</div>
-      <div class="why-text">Local</div>
-    </div>
-    <div class="why-item">
-      <div class="why-emoji">🔇</div>
-      <div class="why-text">Low-key</div>
-    </div>
-    <div class="why-item">
-      <div class="why-emoji">7</div>
-      <div class="why-text">Days a week</div>
-    </div>
-  </div>
-
-  <!-- CONTACT -->
-  <div class="contact-bar">
-    <div class="contact-left">
-      <div class="contact-phone">(518) 209-7468</div>
-      <div class="contact-sub">Call or text — I usually respond within minutes</div>
-    </div>
-    <div class="contact-right">
-      <div class="contact-area">Astoria, Queens, NY</div>
-      <div class="contact-web">johnnygravitt22.github.io/johnny-gravitt-services</div>
-    </div>
-  </div>
-
-  <!-- MULTILINGUAL -->
+  <!-- LANGUAGES -->
   <div class="lang-bar">
-    <p>🇺🇸 English &nbsp;·&nbsp; 🇨🇳 中文服务 &nbsp;·&nbsp; 🇰🇷 한국어 가능 &nbsp;·&nbsp; 🇪🇸 Español disponible</p>
+    <p>🇺🇸 English · 🇨🇳 中文服务 · 🇰🇷 한국어 가능 · 🇯🇵 日本語対応 · 🇪🇸 Español disponible</p>
   </div>
 
 </div>

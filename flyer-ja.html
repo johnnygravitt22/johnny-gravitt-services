@@ -8,113 +8,342 @@
   <style>
     @page { size: letter; margin: 0; }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Space Grotesk', -apple-system, sans-serif; background: #0a0a0a; color: #e8e8e8; -webkit-font-smoothing: antialiased; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1rem; }
-    .flyer { width: 8.5in; min-height: 11in; background: #0a0a0a; padding: 0.6in 0.7in; display: flex; flex-direction: column; position: relative; overflow: hidden; }
-    .flyer::before { content: ''; position: absolute; top: -20%; right: -10%; width: 50%; height: 60%; background: radial-gradient(ellipse, rgba(201,240,107,0.06) 0%, transparent 70%); pointer-events: none; }
-    .header { display: flex;
+
+    body {
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #e8e8e8;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
     }
-    .header-left { display: flex; align-items: center; gap: 0.8rem; }
-    .header-photo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #2a2a2a; }
-    .DELETEME { justify-content: space-between; align-items: center; margin-bottom: 0.4in; position: relative; z-index: 1; }
-    .name { font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
-    .name span { color: #c9f06b; }
-    .tag { font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: #c9f06b; background: rgba(201,240,107,0.1); border: 1px solid rgba(201,240,107,0.2); padding: 0.3rem 0.7rem; border-radius: 4px; }
-    .headline { margin-bottom: 0.35in; position: relative; z-index: 1; }
-    .headline h1 { font-size: 2.6rem; font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 0.5rem; }
-    .headline h1 em { font-style: normal; color: #c9f06b; }
-    .headline p { font-size: 0.95rem; color: #888; max-width: 450px; line-height: 1.6; }
-    .headline-row { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 0.35in; position: relative; z-index: 1; }
-    .header-photo { width: 140px; height: 170px; object-fit: cover; border-radius: 12px; flex-shrink: 0; }
-    .rate-box { background: rgba(201,240,107,0.08); border: 1px solid rgba(201,240,107,0.2); border-radius: 12px; padding: 1rem 1.3rem; margin-bottom: 0.35in; display: flex; align-items: center; gap: 1.5rem; position: relative; z-index: 1; }
-    .rate-number { font-size: 2.8rem; font-weight: 700; color: #c9f06b; letter-spacing: -2px; line-height: 1; }
-    .rate-number span { font-size: 1.4rem; vertical-align: top; }
-    .rate-details { flex: 1; }
-    .rate-details .rate-label { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.15rem; }
-    .rate-details .rate-sub { font-size: 0.8rem; color: #888; }
-    .services-label { font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: #c9f06b; margin-bottom: 0.6rem; position: relative; z-index: 1; }
-    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.35in; position: relative; z-index: 1; }
-    .service { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; padding: 0.7rem 0.9rem; display: flex; align-items: flex-start; gap: 0.6rem; }
-    .service-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
-    .service h3 { font-size: 0.85rem; font-weight: 600; color: #fff; margin-bottom: 0.15rem; }
-    .service p { font-size: 0.7rem; color: #888; line-height: 1.4; }
-    .service-featured { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(201,240,107,0.08) 0%, #141414 100%); border-color: rgba(201,240,107,0.15); }
-    .why-row { display: flex; gap: 0.8rem; margin-bottom: 0.35in; position: relative; z-index: 1; }
-    .why-item { flex: 1; text-align: center; padding: 0.6rem; background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; }
-    .why-item .why-emoji { font-size: 1.2rem; margin-bottom: 0.2rem; }
-    .why-item .why-text { font-size: 0.7rem; color: #ccc; font-weight: 500; }
-    .contact-bar { margin-top: auto; background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; padding: 1rem 1.3rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
-    .contact-left .contact-phone { font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
-    .contact-left .contact-sub { font-size: 0.7rem; color: #888; margin-top: 0.1rem; }
+
+    .flyer {
+      width: 8.5in;
+      min-height: 11in;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== TOP HERO: Photo + Identity ===== */
+    .hero {
+      display: flex;
+      align-items: stretch;
+      min-height: 280px;
+      position: relative;
+    }
+
+    .hero-content {
+      flex: 1;
+      padding: 0.6in 0.5in 0.4in 0.7in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c9f06b;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      margin-bottom: 0.6rem;
+    }
+    .hero h1 em { font-style: normal; color: #c9f06b; }
+
+    .hero-desc {
+      font-size: 0.85rem;
+      color: #999;
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    .hero-photo {
+      width: 240px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* Fade photo into the dark background */
+    .hero-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, #0a0a0a 0%, transparent 35%),
+        linear-gradient(to top, #0a0a0a 0%, transparent 25%);
+      pointer-events: none;
+    }
+
+    /* Subtle glow behind photo area */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 300px; height: 100%;
+      background: radial-gradient(ellipse at 80% 40%, rgba(201,240,107,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ===== BODY CONTENT ===== */
+    .body {
+      padding: 0 0.7in;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* RATE */
+    .rate-box {
+      background: rgba(201,240,107,0.08);
+      border: 1px solid rgba(201,240,107,0.2);
+      border-radius: 10px;
+      padding: 0.7rem 1.1rem;
+      margin-bottom: 0.3in;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .rate-number {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #c9f06b;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+    .rate-number span { font-size: 1.2rem; vertical-align: top; }
+
+    .rate-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.1rem;
+    }
+    .rate-sub { font-size: 0.75rem; color: #777; }
+
+    /* SERVICES */
+    .services-label {
+      font-size: 0.58rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c9f06b;
+      margin-bottom: 0.5rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem;
+      margin-bottom: 0.25in;
+    }
+
+    .service {
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 0.6rem 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .service-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+    .service h3 { font-size: 0.78rem; font-weight: 600; color: #fff; margin-bottom: 0.1rem; }
+    .service p { font-size: 0.65rem; color: #777; line-height: 1.4; }
+
+    .service-featured {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(201,240,107,0.06) 0%, #111 100%);
+      border-color: rgba(201,240,107,0.12);
+    }
+
+    /* TRUST ROW */
+    .trust-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.25in;
+    }
+    .trust-item {
+      flex: 1;
+      text-align: center;
+      padding: 0.45rem;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+    }
+    .trust-emoji { font-size: 1rem; margin-bottom: 0.15rem; }
+    .trust-text { font-size: 0.65rem; color: #bbb; font-weight: 500; }
+
+    /* CONTACT */
+    .contact-bar {
+      margin-top: 0.15in;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 10px;
+      padding: 0.8rem 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .contact-phone {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .contact-sub { font-size: 0.65rem; color: #777; margin-top: 0.1rem; }
     .contact-right { text-align: right; }
-    .contact-right .contact-area { font-size: 0.85rem; color: #ccc; font-weight: 500; }
-    .contact-right .contact-web { font-size: 0.65rem; color: #555; margin-top: 0.15rem; }
-    .lang-bar { margin-top: 0.5rem; text-align: center; padding: 0.5rem; border-top: 1px solid #1a1a1a; position: relative; z-index: 1; }
-    .lang-bar p { font-size: 0.65rem; color: #555; line-height: 1.6; }
-    @media print { body { background: #0a0a0a; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .flyer { width: 100%; height: 100vh; page-break-after: avoid; } }
-    @media (max-width: 768px) { body { padding: 0.5rem; } .flyer { width: 100%; min-height: auto; padding: 1.5rem; } .headline h1 { font-size: 2rem; } .services-grid { grid-template-columns: 1fr; } .why-row { flex-wrap: wrap; } .why-item { flex: 1 1 45%; } .contact-bar { flex-direction: column; text-align: center; gap: 0.8rem; } .contact-right { text-align: center; } }
+    .contact-area { font-size: 0.8rem; color: #ccc; font-weight: 500; }
+    .contact-web { font-size: 0.6rem; color: #444; margin-top: 0.1rem; }
+
+    /* FOOTER */
+    .lang-bar {
+      padding: 0.4rem 0.7in;
+      text-align: center;
+    }
+    .lang-bar p { font-size: 0.6rem; color: #444; }
+
+    /* PRINT */
+    @media print {
+      body { background: #0a0a0a; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .flyer { width: 100%; height: 100vh; }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      body { padding: 0.5rem; }
+      .flyer { width: 100%; min-height: auto; }
+      .hero { flex-direction: column-reverse; min-height: auto; }
+      .hero-photo { width: 100%; height: 200px; }
+      .hero-photo::after {
+        background:
+          linear-gradient(to top, #0a0a0a 0%, transparent 40%),
+          linear-gradient(to right, transparent, transparent);
+      }
+      .hero-content { padding: 1.5rem; }
+      .hero h1 { font-size: 2rem; }
+      .body { padding: 0 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .trust-row { flex-wrap: wrap; }
+      .trust-item { flex: 1 1 45%; }
+      .contact-bar { flex-direction: column; text-align: center; gap: 0.6rem; }
+      .contact-right { text-align: center; }
+      .lang-bar { padding: 0.4rem 1.5rem; }
+    }
   </style>
 </head>
 <body>
+
 <div class="flyer">
-  <div class="header">
-    <div class="name">johnny<span>.</span>gravitt</div>
-    <div class="tag">アストリア、クイーンズ</div>
-  </div>
-  <div class="headline-row">
-    <div class="headline">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">アストリア、クイーンズ · いつでも対応</div>
       <h1>電話一本で<br>スパが<em>スムーズに</em>。</h1>
-      <p>清掃、買い出し、洗濯、スタッフマッサージ、運営サポート — すべて一人で対応。お客様に集中してください。残りは私にお任せ。</p>
+      <p class="hero-desc">清掃、買い出し、洗濯、スタッフマッサージ、運営サポート — すべて一人で対応。お客様に集中してください。残りは私にお任せ。</p>
     </div>
-    <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
-  </div>
-  </div>
-  <div class="services-label">// サービス内容</div>
-  <div class="services-grid">
-    <div class="service">
-      <div class="service-icon">🧹</div>
-      <div><h3>徹底清掃</h3><p>施術室、ロビー、トイレ — すべてのスペースを清潔に。</p></div>
-    </div>
-    <div class="service">
-      <div class="service-icon">🏃</div>
-      <div><h3>買い出し・配達</h3><p>タオル、オイル、薬局、郵便局 — 必要なものを迅速に。</p></div>
-    </div>
-    <div class="service">
-      <div class="service-icon">💆</div>
-      <div><h3>スタッフマッサージ</h3><p>セラピストはお客様を大切にします。私がセラピストを大切にします。</p></div>
-    </div>
-    <div class="service">
-      <div class="service-icon">🧺</div>
-      <div><h3>洗濯・補充</h3><p>タオル、ガウン、シーツ — 洗濯、畳み、補充。常に整頓。</p></div>
-    </div>
-    <div class="service">
-      <div class="service-icon">⚡</div>
-      <div><h3>総合運営</h3><p>部屋の準備、お客様のお出迎え、力仕事 — 運営を支えます。</p></div>
-    </div>
-    <div class="service service-featured">
-      <div class="service-icon">🌐</div>
-      <div><h3>ウェブサイト制作</h3><p>スパのウェブサイトを制作・リニューアル — モバイル対応、プロ仕様、新規顧客獲得に。詳細はお問い合わせください。</p></div>
+    <div class="hero-photo">
+      <img src="johnny-real.jpg" alt="Johnny Gravitt">
     </div>
   </div>
-  <div class="why-row">
-    <div class="why-item"><div class="why-emoji">⏰</div><div class="why-text">常に時間厳守</div>
-    <div class="why-item"><div class="why-emoji">🤝</div><div class="why-text">信頼</div>
-    <div class="why-item"><div class="why-emoji">📍</div><div class="why-text">地元</div>
-    <div class="why-item"><div class="why-emoji">🔇</div><div class="why-text">控えめ</div>
-    <div class="why-item"><div class="why-emoji">7</div><div class="why-text">日/毎週</div>
-  </div>
-  <div class="contact-bar">
-    <div class="contact-left">
-      <div class="contact-phone">(518) 209-7468</div>
-      <div class="contact-sub">電話またはテキスト — 通常数分以内に返信</div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- RATE -->
+    <div class="rate-box">
+      <div class="rate-number"><span>$</span>25<span>/hr</span></div>
+      <div>
+        <div class="rate-label">全サービス込み。統一料金。</div>
+        <div class="rate-sub">1回最低3時間 · 柔軟なスケジュール</div>
+      </div>
     </div>
-    <div class="contact-right">
-      <div class="contact-area">ニューヨーク クイーンズ アストリア</div>
-      <div class="contact-web">johnnygravitt22.github.io/johnny-gravitt-services</div>
+
+    <!-- SERVICES -->
+    <div class="services-label">// サービス内容</div>
+    <div class="services-grid">
+      <div class="service">
+        <div class="service-icon">🧹</div>
+        <div><h3>徹底清掃</h3><p>施術室、ロビー、トイレ — すべてのスペースを清潔に。</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">🏃</div>
+        <div><h3>買い出し・配達</h3><p>タオル、オイル、薬局、郵便局 — 必要なものを迅速に。</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">💆</div>
+        <div><h3>スタッフマッサージ</h3><p>セラピストはお客様を大切にします。私がセラピストを大切にします。</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">🧺</div>
+        <div><h3>洗濯・補充</h3><p>タオル、ガウン、シーツ — 洗濯、畳み、補充。常に整頓。</p></div>
+      </div>
+      <div class="service">
+        <div class="service-icon">⚡</div>
+        <div><h3>総合運営</h3><p>部屋の準備、お客様のお出迎え、力仕事 — 運営を支えます。</p></div>
+      </div>
+      <div class="service service-featured">
+        <div class="service-icon">🌐</div>
+        <div><h3>ウェブサイト制作</h3><p>スパのウェブサイトを制作・リニューアル — モバイル対応、プロ仕様、新規顧客獲得に。詳細はお問い合わせください。</p></div>
+      </div>
     </div>
+
+    <!-- TRUST -->
+    <div class="trust-row">
+      <div class="trust-item"><div class="trust-emoji">⏰</div><div class="trust-text">常に時間厳守</div></div>
+      <div class="trust-item"><div class="trust-emoji">🤝</div><div class="trust-text">信頼</div></div>
+      <div class="trust-item"><div class="trust-emoji">📍</div><div class="trust-text">地元</div></div>
+      <div class="trust-item"><div class="trust-emoji">🔇</div><div class="trust-text">控えめ</div></div>
+      <div class="trust-item"><div class="trust-emoji">7</div><div class="trust-text">日/毎週</div></div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-bar">
+      <div>
+        <div class="contact-phone">(518) 209-7468</div>
+        <div class="contact-sub">電話またはテキスト — 通常数分以内に返信</div>
+      </div>
+      <div class="contact-right">
+        <div class="contact-area">ニューヨーク クイーンズ アストリア</div>
+        <div class="contact-web">johnnygravitt22.github.io/johnny-gravitt-services</div>
+      </div>
+    </div>
+
   </div>
+
+  <!-- LANGUAGES -->
   <div class="lang-bar">
-    <p>🇺🇸 English &nbsp;·&nbsp; 🇨🇳 中文服务 &nbsp;·&nbsp; 🇰🇷 한국어 가능 &nbsp;·&nbsp; 🇪🇸 Español disponible &nbsp;·&nbsp; 🇯🇵 日本語対応</p>
+    <p>🇺🇸 English · 🇨🇳 中文服务 · 🇰🇷 한국어 가능 · 🇯🇵 日本語対応 · 🇪🇸 Español disponible</p>
   </div>
+
 </div>
+
 </body>
 </html>
