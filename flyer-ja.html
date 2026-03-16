@@ -11,7 +11,11 @@
     body { font-family: 'Space Grotesk', -apple-system, sans-serif; background: #0a0a0a; color: #e8e8e8; -webkit-font-smoothing: antialiased; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1rem; }
     .flyer { width: 8.5in; min-height: 11in; background: #0a0a0a; padding: 0.6in 0.7in; display: flex; flex-direction: column; position: relative; overflow: hidden; }
     .flyer::before { content: ''; position: absolute; top: -20%; right: -10%; width: 50%; height: 60%; background: radial-gradient(ellipse, rgba(201,240,107,0.06) 0%, transparent 70%); pointer-events: none; }
-    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4in; position: relative; z-index: 1; }
+    .header { display: flex;
+    }
+    .header-left { display: flex; align-items: center; gap: 0.8rem; }
+    .header-photo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #2a2a2a; }
+    .DELETEME { justify-content: space-between; align-items: center; margin-bottom: 0.4in; position: relative; z-index: 1; }
     .name { font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
     .name span { color: #c9f06b; }
     .tag { font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: #c9f06b; background: rgba(201,240,107,0.1); border: 1px solid rgba(201,240,107,0.2); padding: 0.3rem 0.7rem; border-radius: 4px; }
@@ -51,7 +55,7 @@
 <body>
 <div class="flyer">
   <div class="header">
-    <div class="name">johnny<span>.</span>gravitt</div>
+    <div class="header-left"><img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo"><div class="name">johnny<span>.</span>gravitt</div></div>
     <div class="tag">アストリア、クイーンズ</div>
   </div>
   <div class="headline">

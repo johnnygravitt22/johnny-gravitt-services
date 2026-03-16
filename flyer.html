@@ -52,10 +52,24 @@
     .header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 0.4in;
       position: relative;
       z-index: 1;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .header-photo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #2a2a2a;
     }
 
     .name {
@@ -320,7 +334,10 @@
 
   <!-- HEADER -->
   <div class="header">
-    <div class="name">johnny<span>.</span>gravitt</div>
+    <div class="header-left">
+      <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+      <div class="name">johnny<span>.</span>gravitt</div>
+    </div>
     <div class="tag">Astoria, Queens</div>
   </div>
 
