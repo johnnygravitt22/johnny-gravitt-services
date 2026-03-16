@@ -23,8 +23,11 @@
     .headline h1 { font-size: 2.6rem; font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 0.5rem; }
     .headline h1 em { font-style: normal; color: #c9f06b; }
     .headline p { font-size: 0.95rem; color: #888; max-width: 450px; line-height: 1.6; }
-    .photo-section { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 0.35in; position: relative; z-index: 1; }
-    .header-photo { width: 150px; height: 150px; border-radius: 12px; object-fit: cover; border: 2px solid #2a2a2a; flex-shrink: 0; }
+    .hero-card { display: flex; align-items: stretch; margin-bottom: 0.35in; position: relative; z-index: 1; background: #111; border: 1px solid #2a2a2a; border-radius: 14px; overflow: hidden; }
+    .hero-text-side { flex: 1; padding: 1.5rem 1.8rem; display: flex; flex-direction: column; justify-content: center; }
+    .hero-photo-side { width: 180px; flex-shrink: 0; position: relative; }
+    .hero-photo-side::before { content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 100%; background: linear-gradient(to right, #111, transparent); z-index: 1; }
+    .header-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
     .rate-box { background: rgba(201,240,107,0.08); border: 1px solid rgba(201,240,107,0.2); border-radius: 12px; padding: 1rem 1.3rem; margin-bottom: 0.35in; display: flex; align-items: center; gap: 1.5rem; position: relative; z-index: 1; }
     .rate-number { font-size: 2.8rem; font-weight: 700; color: #c9f06b; letter-spacing: -2px; line-height: 1; }
     .rate-number span { font-size: 1.4rem; vertical-align: top; }
@@ -60,19 +63,15 @@
     <div class="name">johnny<span>.</span>gravitt</div>
     <div class="tag">아스토리아, 퀸즈</div>
   </div>
-  <div class="photo-section">
-    <div class="headline" style="margin-bottom: 0;">
-      <h1>전화 한 통으로<br>스파가 <em>더 원활하게</em>.</h1>
-      <p>청소, 심부름, 세탁, 직원 마사지, 운영 지원 — 한 사람이 모두 담당합니다. 고객에게 집중하세요. 나머지는 제가 합니다.</p>
+  <div class="hero-card">
+    <div class="hero-text-side">
+      <h1 style="font-size:2.2rem; font-weight:700; color:#fff; line-height:1.1; letter-spacing:-1.5px; margin-bottom:0.5rem;">전화 한 통으로<br>스파가 <em style="font-style:normal; color:#c9f06b;">더 원활하게</em>.</h1>
+      <p style="font-size:0.88rem; color:#888; max-width:400px; line-height:1.6;">청소, 심부름, 세탁, 직원 마사지, 운영 지원 — 한 사람이 모두 담당합니다. 고객에게 집중하세요. 나머지는 제가 합니다.</p>
     </div>
-    <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+    <div class="hero-photo-side">
+      <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+    </div>
   </div>
-  <div class="rate-box">
-    <div class="rate-number"><span>$</span>25<span>/시간</span></div>
-    <div class="rate-details">
-      <div class="rate-label">모든 서비스 포함. 단일 요금.</div>
-      <div class="rate-sub">방문당 최소 3시간 • 유연한 일정</div>
-    </div>
   </div>
   <div class="services-label">// 서비스 내용</div>
   <div class="services-grid">

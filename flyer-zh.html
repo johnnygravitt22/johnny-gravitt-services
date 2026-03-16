@@ -98,8 +98,11 @@
     }
 
     .headline p {
-    .photo-section { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 0.35in; position: relative; z-index: 1; }
-    .header-photo { width: 150px; height: 150px; border-radius: 12px; object-fit: cover; border: 2px solid #2a2a2a; flex-shrink: 0; }
+    .hero-card { display: flex; align-items: stretch; margin-bottom: 0.35in; position: relative; z-index: 1; background: #111; border: 1px solid #2a2a2a; border-radius: 14px; overflow: hidden; }
+    .hero-text-side { flex: 1; padding: 1.5rem 1.8rem; display: flex; flex-direction: column; justify-content: center; }
+    .hero-photo-side { width: 180px; flex-shrink: 0; position: relative; }
+    .hero-photo-side::before { content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 100%; background: linear-gradient(to right, #111, transparent); z-index: 1; }
+    .header-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
       font-size: 0.95rem;
       color: #888;
       max-width: 450px;
@@ -327,21 +330,15 @@
   </div>
 
   <!-- HEADLINE -->
-  <div class="photo-section">
-    <div class="headline" style="margin-bottom: 0;">
-      <h1>一个电话，<br>您的水疗中心<em>更顺畅</em>。</h1>
-      <p>清洁、跑腿、洗衣、员工按摩和运营支持——一个可靠的人全部搞定。您专注客户，其余交给我。</p>
+  <div class="hero-card">
+    <div class="hero-text-side">
+      <h1 style="font-size:2.2rem; font-weight:700; color:#fff; line-height:1.1; letter-spacing:-1.5px; margin-bottom:0.5rem;">一个电话，<br>您的水疗中心<em style="font-style:normal; color:#c9f06b;">更顺畅</em>。</h1>
+      <p style="font-size:0.88rem; color:#888; max-width:400px; line-height:1.6;">清洁、跑腿、洗衣、员工按摩和运营支持——一个可靠的人全部搞定。您专注客户，其余交给我。</p>
     </div>
-    <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+    <div class="hero-photo-side">
+      <img src="johnny-real.jpg" alt="Johnny Gravitt" class="header-photo">
+    </div>
   </div>
-
-  <!-- RATE -->
-  <div class="rate-box">
-    <div class="rate-number"><span>$</span>25<span>/hr</span></div>
-    <div class="rate-details">
-      <div class="rate-label">全部包含。统一价格。</div>
-      <div class="rate-sub">每次最少3小时 • 灵活安排</div>
-    </div>
   </div>
 
   <!-- SERVICES -->
