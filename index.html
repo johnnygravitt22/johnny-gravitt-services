@@ -380,14 +380,16 @@
       /* FOOTER + LANG */
       footer { padding: 1.2rem 1rem 4rem; font-size: 0.65rem; }
       .lang-toggle {
-        bottom: 1rem; left: 50%; right: auto;
-        transform: translateX(-50%);
+        bottom: 0.8rem; left: 50%; right: auto;
+        transform: translateX(-50%) scale(1);
         border-radius: 50px;
-        background: rgba(26, 26, 26, 0.95);
+        background: rgba(26, 26, 26, 0.9);
         backdrop-filter: blur(10px);
         box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        opacity: 0.6;
       }
-      .lang-btn { padding: 0.45rem 0.9rem; font-size: 0.65rem; }
+      .lang-toggle:hover { opacity: 0.6; }
+      .lang-btn { padding: 0.35rem 0.7rem; font-size: 0.58rem; }
     }
 
     /* RESPONSIVE — SMALL PHONES */
@@ -585,6 +587,11 @@
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Force visible on touch/small screens in case observer fails */
+    @media (max-width: 900px) {
+      .fade-in { opacity: 1 !important; transform: none !important; }
+    }
 
     /* LANGUAGE TOGGLE */
     .lang-toggle {
