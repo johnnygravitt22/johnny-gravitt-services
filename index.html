@@ -592,12 +592,17 @@
       display: flex; border-radius: 8px; overflow: hidden;
       border: 1px solid var(--border);
       background: var(--bg-card);
+      opacity: 0.4;
+      transition: opacity 0.3s;
+      transform: scale(0.85);
+      transform-origin: bottom right;
     }
+    .lang-toggle:hover { opacity: 1; }
     .lang-btn {
-      padding: 0.45rem 0.8rem; border: none;
+      padding: 0.4rem 0.65rem; border: none;
       background: transparent; cursor: pointer;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; font-weight: 500;
+      font-size: 0.6rem; font-weight: 500;
       color: var(--text-muted); transition: all 0.2s;
     }
     .lang-btn.active { background: var(--accent); color: var(--bg); }
